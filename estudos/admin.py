@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Materia, Tarefa, SessaoEstudo
+
+from .models import Materia, SessaoEstudo, Tarefa
 
 admin.site.register(Materia)
 admin.site.register(Tarefa)

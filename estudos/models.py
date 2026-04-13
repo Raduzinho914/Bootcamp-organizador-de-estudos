@@ -1,6 +1,5 @@
 from django.db import models
 
-
 DIAS_SEMANA = [
     ("seg", "Segunda-feira"),
     ("ter", "Terça-feira"),
@@ -85,7 +84,7 @@ class SessaoEstudo(models.Model):
         return f"{self.materia.nome} - {self.get_dia_semana_display()} {self.hora_inicio}"
 
     def duracao_minutos(self):
-        from datetime import datetime, date
+        from datetime import date, datetime
 
         inicio = datetime.combine(date.today(), self.hora_inicio)
         fim = datetime.combine(date.today(), self.hora_fim)

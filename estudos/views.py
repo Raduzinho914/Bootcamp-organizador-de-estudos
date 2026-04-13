@@ -1,9 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from django.utils import timezone
+from django.shortcuts import get_object_or_404, redirect, render
 
-from .models import Materia, Tarefa, SessaoEstudo, DIAS_SEMANA
-from .forms import MateriaForm, TarefaForm, SessaoEstudoForm
+from .forms import MateriaForm, SessaoEstudoForm, TarefaForm
+from .models import DIAS_SEMANA, Materia, SessaoEstudo, Tarefa
 
 
 def dashboard(request):

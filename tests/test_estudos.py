@@ -1,10 +1,9 @@
-import pytest
 from datetime import date, time, timedelta
-from django.utils import timezone
 
-from estudos.models import Materia, Tarefa, SessaoEstudo
-from estudos.forms import TarefaForm, MateriaForm, SessaoEstudoForm
+import pytest
 
+from estudos.forms import MateriaForm, SessaoEstudoForm, TarefaForm
+from estudos.models import Materia, SessaoEstudo, Tarefa
 
 # ── Fixtures ──────────────────────────────────────────────────────────────────
 

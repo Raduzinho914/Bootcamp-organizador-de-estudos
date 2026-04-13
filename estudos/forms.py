@@ -1,5 +1,6 @@
 from django import forms
-from .models import Materia, Tarefa, SessaoEstudo
+
+from .models import Materia, SessaoEstudo, Tarefa
 
 
 class MateriaForm(forms.ModelForm):
