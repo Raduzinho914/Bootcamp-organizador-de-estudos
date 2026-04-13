@@ -1,0 +1,48 @@
+{% extends "estudos/base.html" %}
+
+{% block title %}Matérias — FocusFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Matérias</h1>
+  <a href="{% url 'materia_criar' %}" class="btn btn-primary">+ Nova Matéria</a>
+</div>
+
+<div class="card">
+  {% if materias %}
+  <table>
+    <thead>
+      <tr>
+        <th>Cor</th>
+        <th>Nome</th>
+        <th>Tarefas</th>
+        <th>Sessões Semanais</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for materia in materias %}
+      <tr>
+        <td><span class="color-dot" style="background:{{ materia.cor }};width:20px;height:20px;"></span></td>
+        <td style="font-weight:500;">{{ materia.nome }}</td>
+        <td>{{ materia.tarefas.count }}</td>
+        <td>{{ materia.sessoes.count }}</td>
+        <td>
+          <div class="actions">
+            <a href="{% url 'materia_editar' materia.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+            <a href="{% url 'materia_excluir' materia.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <span class="icon">📚</span>
+    <p>Nenhuma matéria cadastrada ainda.</p>
+    <a href="{% url 'materia_criar' %}" class="btn btn-primary">Adicionar Matéria</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+[project]
+name = "focusflow"
+version = "1.0.0"
+description = "Organizador de estudos para estudantes com dificuldade de rotina"
+authors = [{ name = "Seu Nome", email = "seuemail@exemplo.com" }]
+requires-python = ">=3.11"
+dependencies = [
+    "django>=4.2,<5.0",
+    "pytest>=8.0",
+    "pytest-django>=4.8",
+    "ruff>=0.4",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]

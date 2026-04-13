@@ -1,0 +1,33 @@
+{% extends "estudos/base.html" %}
+
+{% block title %}Grade Semanal — FocusFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Grade Semanal</h1>
+  <a href="{% url 'sessao_criar' %}" class="btn btn-primary">+ Nova Sessão</a>
+</div>
+
+<div class="week-grid" style="margin-bottom:28px;">
+  {% for dia in grade %}
+  <div class="day-col">
+    <div class="day-name">{{ dia.nome }}</div>
+    {% for sessao in dia.sessoes %}
+    <div class="sessao-block" style="background:{{ sessao.materia.cor }}18;border-color:{{ sessao.materia.cor }};">
+      <div style="font-weight:600;">{{ sessao.materia.nome }}</div>
+      {% if sessao.descricao %}<div style="font-size:11px;color:var(--text-muted);">{{ sessao.descricao }}</div>{% endif %}
+      <div class="time">{{ sessao.hora_inicio|time:"H:i" }} – {{ sessao.hora_fim|time:"H:i" }} ({{ sessao.duracao_minutos }}min)</div>
+      <div style="display:flex;gap:6px;margin-top:6px;">
+        <a href="{% url 'sessao_editar' sessao.pk %}" class="btn btn-secondary btn-sm">✏</a>
+        <a href="{% url 'sessao_excluir' sessao.pk %}" class="btn btn-danger btn-sm">✕</a>
+      </div>
+    </div>
+    {% empty %}
+    <div style="font-size:12px;color:var(--text-muted);text-align:center;padding:16px 0;border:1px dashed var(--border);border-radius:8px;">
+      Livre
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

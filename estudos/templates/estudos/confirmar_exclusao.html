@@ -1,0 +1,24 @@
+{% extends "estudos/base.html" %}
+
+{% block title %}Confirmar Exclusão — FocusFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Confirmar Exclusão</h1>
+</div>
+
+<div class="card" style="max-width:480px;">
+  <p style="margin-bottom:20px;font-size:15px;">
+    Tem certeza que deseja excluir a {{ tipo }}
+    <strong style="color:var(--text);">"{{ objeto }}"</strong>?
+    Esta ação não pode ser desfeita.
+  </p>
+  <div style="display:flex;gap:12px;">
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Sim, excluir</button>
+    </form>
+    <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
+  </div>
+</div>
+{% endblock %}

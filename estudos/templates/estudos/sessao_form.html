@@ -1,0 +1,43 @@
+{% extends "estudos/base.html" %}
+
+{% block title %}{{ titulo }} — FocusFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">{{ titulo }}</h1>
+  <a href="javascript:history.back()" class="btn btn-secondary">← Voltar</a>
+</div>
+
+<div class="card" style="max-width:680px;">
+  <form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <div style="color:var(--red);margin-bottom:16px;font-size:14px;">
+      {% for err in form.non_field_errors %}{{ err }}{% endfor %}
+    </div>
+    {% endif %}
+    <div class="form-grid">
+      {% for field in form %}
+      <div class="form-group" style="{% if field.name == 'descricao' %}grid-column:1/-1{% endif %}">
+        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% if field.name == 'cor' %}
+        <div style="display:flex;align-items:center;gap:12px;">
+          {{ field }}
+          <span style="font-size:12px;color:var(--text-muted);">Escolha uma cor para identificar a matéria</span>
+        </div>
+        {% else %}
+        {{ field }}
+        {% endif %}
+        {% if field.errors %}
+        <ul class="errorlist">{% for err in field.errors %}<li>{{ err }}</li>{% endfor %}</ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <div style="display:flex;gap:12px;margin-top:24px;">
+      <button type="submit" class="btn btn-primary">Salvar</button>
+      <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

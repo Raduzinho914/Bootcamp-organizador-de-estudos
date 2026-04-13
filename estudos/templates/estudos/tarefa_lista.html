@@ -1,0 +1,112 @@
+{% extends "estudos/base.html" %}
+
+{% block title %}Tarefas — FocusFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Tarefas</h1>
+  <a href="{% url 'tarefa_criar' %}" class="btn btn-primary">+ Nova Tarefa</a>
+</div>
+
+<!-- Filtros -->
+<div class="card" style="margin-bottom:20px;">
+  <form method="get" style="display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;">
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select name="status" class="form-select" style="width:auto;">
+        <option value="">Todos</option>
+        <option value="pendente" {% if status_filtro == "pendente" %}selected{% endif %}>Pendente</option>
+        <option value="em_andamento" {% if status_filtro == "em_andamento" %}selected{% endif %}>Em andamento</option>
+        <option value="concluido" {% if status_filtro == "concluido" %}selected{% endif %}>Concluído</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Matéria</label>
+      <select name="materia" class="form-select" style="width:auto;">
+        <option value="">Todas</option>
+        {% for m in materias %}
+        <option value="{{ m.id }}" {% if materia_filtro == m.id|stringformat:"s" %}selected{% endif %}>{{ m.nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Prioridade</label>
+      <select name="prioridade" class="form-select" style="width:auto;">
+        <option value="">Todas</option>
+        <option value="alta" {% if prioridade_filtro == "alta" %}selected{% endif %}>Alta</option>
+        <option value="media" {% if prioridade_filtro == "media" %}selected{% endif %}>Média</option>
+        <option value="baixa" {% if prioridade_filtro == "baixa" %}selected{% endif %}>Baixa</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-secondary">Filtrar</button>
+    {% if status_filtro or materia_filtro or prioridade_filtro %}
+    <a href="{% url 'tarefa_lista' %}" class="btn btn-secondary">Limpar</a>
+    {% endif %}
+  </form>
+</div>
+
+<div class="card">
+  {% if tarefas %}
+  <table>
+    <thead>
+      <tr>
+        <th>Tarefa</th>
+        <th>Matéria</th>
+        <th>Status</th>
+        <th>Prioridade</th>
+        <th>Prazo</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tarefa in tarefas %}
+      <tr>
+        <td>
+          <div style="font-weight:500;">{{ tarefa.titulo }}</div>
+          {% if tarefa.descricao %}
+          <div style="font-size:12px;color:var(--text-muted);">{{ tarefa.descricao|truncatechars:60 }}</div>
+          {% endif %}
+        </td>
+        <td>
+          {% if tarefa.materia %}
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="color-dot" style="background:{{ tarefa.materia.cor }}"></span>
+            {{ tarefa.materia.nome }}
+          </div>
+          {% else %}—{% endif %}
+        </td>
+        <td><span class="badge badge-{{ tarefa.status }}">{{ tarefa.get_status_display }}</span></td>
+        <td><span class="badge badge-{{ tarefa.prioridade }}">{{ tarefa.get_prioridade_display }}</span></td>
+        <td>
+          {% if tarefa.prazo %}
+            {% if tarefa.esta_atrasada %}
+            <span style="color:var(--red);">{{ tarefa.prazo|date:"d/m/Y" }} ⚠</span>
+            {% else %}
+            {{ tarefa.prazo|date:"d/m/Y" }}
+            {% endif %}
+          {% else %}—{% endif %}
+        </td>
+        <td>
+          <div class="actions">
+            {% if tarefa.status != "concluido" %}
+            <form method="post" action="{% url 'tarefa_concluir' tarefa.pk %}">{% csrf_token %}
+              <button type="submit" class="btn btn-success btn-sm" title="Concluir">✓</button>
+            </form>
+            {% endif %}
+            <a href="{% url 'tarefa_editar' tarefa.pk %}" class="btn btn-secondary btn-sm">Editar</a>
+            <a href="{% url 'tarefa_excluir' tarefa.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <span class="icon">📋</span>
+    <p>Nenhuma tarefa encontrada.</p>
+    <a href="{% url 'tarefa_criar' %}" class="btn btn-primary">Criar primeira tarefa</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

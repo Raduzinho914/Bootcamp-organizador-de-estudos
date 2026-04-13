@@ -1,0 +1,111 @@
+{% extends "estudos/base.html" %}
+
+{% block title %}Dashboard — FocusFlow{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">Dashboard</h1>
+  <a href="{% url 'tarefa_criar' %}" class="btn btn-primary">+ Nova Tarefa</a>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total de Tarefas</div>
+    <div class="stat-value">{{ total_tarefas }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Pendentes</div>
+    <div class="stat-value" style="color: var(--accent2)">{{ tarefas_pendentes }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Concluídas</div>
+    <div class="stat-value" style="color: var(--green)">{{ tarefas_concluidas }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Atrasadas</div>
+    <div class="stat-value" style="color: var(--red)">{{ total_atrasadas }}</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;">
+  <!-- Tarefas recentes -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h2 style="font-family:var(--font-display);font-size:17px;font-weight:700;">Tarefas Pendentes</h2>
+      <a href="{% url 'tarefa_lista' %}" style="font-size:12px;color:var(--accent);text-decoration:none;">Ver todas →</a>
+    </div>
+    {% if tarefas_recentes %}
+    {% for tarefa in tarefas_recentes %}
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+      {% if tarefa.materia %}
+      <span class="color-dot" style="background:{{ tarefa.materia.cor }}"></span>
+      {% else %}
+      <span class="color-dot" style="background:var(--border)"></span>
+      {% endif %}
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ tarefa.titulo }}</div>
+        {% if tarefa.materia %}
+        <div style="font-size:11px;color:var(--text-muted);">{{ tarefa.materia.nome }}</div>
+        {% endif %}
+      </div>
+      <span class="badge badge-{{ tarefa.prioridade }}">{{ tarefa.get_prioridade_display }}</span>
+      {% if tarefa.esta_atrasada %}
+      <span class="badge badge-atrasada">Atrasada</span>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-state" style="padding:30px 0;">
+      <span class="icon">🎉</span>
+      <p>Nenhuma tarefa pendente!</p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Matérias -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h2 style="font-family:var(--font-display);font-size:17px;font-weight:700;">Matérias</h2>
+      <a href="{% url 'materia_criar' %}" style="font-size:12px;color:var(--accent);text-decoration:none;">+ Adicionar</a>
+    </div>
+    {% if materias %}
+    {% for materia in materias %}
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+      <span class="color-dot" style="background:{{ materia.cor }}"></span>
+      <span style="flex:1;font-size:14px;">{{ materia.nome }}</span>
+      <span style="font-size:12px;color:var(--text-muted);">{{ materia.tarefas.count }} tarefa(s)</span>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="empty-state" style="padding:30px 0;">
+      <span class="icon">📚</span>
+      <p>Nenhuma matéria cadastrada.</p>
+      <a href="{% url 'materia_criar' %}" class="btn btn-secondary btn-sm">Adicionar Matéria</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Grade semanal resumida -->
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <h2 style="font-family:var(--font-display);font-size:17px;font-weight:700;">Grade Semanal</h2>
+    <a href="{% url 'sessao_lista' %}" style="font-size:12px;color:var(--accent);text-decoration:none;">Gerenciar →</a>
+  </div>
+  <div class="week-grid">
+    {% for dia in grade %}
+    <div class="day-col">
+      <div class="day-name">{{ dia.nome|slice:":3" }}</div>
+      {% for sessao in dia.sessoes %}
+      <div class="sessao-block" style="background:{{ sessao.materia.cor }}18;border-color:{{ sessao.materia.cor }};">
+        <div>{{ sessao.materia.nome }}</div>
+        <div class="time">{{ sessao.hora_inicio|time:"H:i" }}–{{ sessao.hora_fim|time:"H:i" }}</div>
+      </div>
+      {% empty %}
+      <div style="font-size:12px;color:var(--text-muted);text-align:center;padding:8px 0;">—</div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
