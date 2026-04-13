@@ -81,11 +81,11 @@ ruff check .
 
 ## Autor
 
-Seu Nome — [github.com/seu-usuario](https://github.com/seu-usuario)
+Rafael Carvalho Gonçalves da Silva— [https://github.com/Raduzinho914]
 
 ## Repositório
 
-[github.com/seu-usuario/focusflow](https://github.com/seu-usuario/focusflow)
+[github.com/seu-usuario/focusflow](https://github.com/Raduzinho914/Bootcamp-organizador-de-estudos.git)
 
 # Bootcamp-etapa-inicial
 Aplicação web em Django para organizar rotinas de estudo, ajudando estudantes a gerenciar tarefas, acompanhar o progresso e manter consistência de forma simples e intuitiva.
