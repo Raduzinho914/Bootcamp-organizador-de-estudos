@@ -86,3 +86,6 @@ Seu Nome — [github.com/seu-usuario](https://github.com/seu-usuario)
 ## Repositório
 
 [github.com/seu-usuario/focusflow](https://github.com/seu-usuario/focusflow)
+
+# Bootcamp-etapa-inicial
+Aplicação web em Django para organizar rotinas de estudo, ajudando estudantes a gerenciar tarefas, acompanhar o progresso e manter consistência de forma simples e intuitiva.
